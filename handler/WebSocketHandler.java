@@ -7,34 +7,22 @@ import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smsinmungo.entity.ChatMessage;
-import com.smsinmungo.entity.ChatRoom;
-import com.smsinmungo.entity.ChatRoomManager;
-import com.smsinmungo.service.ChatService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 @Component
 @Slf4j
-public class ChatWebSocketHandler extends TextWebSocketHandler {
+public class WebSocketHandler extends TextWebSocketHandler {
     private final SocketIOServer server;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private static final Map<String, String> users = new HashMap<>();
     private static final Map<String, String> rooms = new HashMap<>();
-    public ChatWebSocketHandler(SocketIOServer server) {
+    public WebSocketHandler(SocketIOServer server) {
         this.server = server;
         server.addListeners(this);
         server.start();
@@ -74,8 +62,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         } else {
             client.sendEvent("full", room);
         }
-        client.sendEvent("currentNum", connectedClients);
-        printLog("onReady", client, room);
+
+        // 방에 있는 모든 클라이언트에게 현재 인원 수 전송
+        server.getRoomOperations(room).sendEvent("currentNum", connectedClients);
+        printLog("onJoinRoom", client, room);
     }
 
     @OnEvent("ready")
