@@ -7,10 +7,13 @@ import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smsinmungo.service.MeetingService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,11 +22,13 @@ import java.util.Objects;
 @Slf4j
 public class WebSocketHandler extends TextWebSocketHandler {
     private final SocketIOServer server;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final MeetingService meetingService;
     private static final Map<String, String> users = new HashMap<>();
     private static final Map<String, String> rooms = new HashMap<>();
-    public WebSocketHandler(SocketIOServer server) {
+
+    public WebSocketHandler(SocketIOServer server, MeetingService meetingService) {
         this.server = server;
+        this.meetingService = meetingService;
         server.addListeners(this);
         server.start();
     }
@@ -105,10 +110,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @OnEvent("chat message")
     public void onChatMessage(SocketIOClient client, Map<String, Object> payload) {
         String room = (String) payload.get("room");
+        String sender = (String) payload.get("username");
         String message = (String) payload.get("message");
         client.getNamespace().getRoomOperations(room).sendEvent("chat message", payload);
+        meetingService.saveMessage(room, sender, message);
         printLog("onChatMessage", client, room);
     }
+
     @OnEvent("currentNum")
     public void onCurrentNum(SocketIOClient client, Map<String, Object> payload){
         String room = (String) payload.get("room");
