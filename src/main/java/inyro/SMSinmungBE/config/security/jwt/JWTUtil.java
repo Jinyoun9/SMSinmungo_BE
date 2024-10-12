@@ -35,14 +35,15 @@ public class JWTUtil {
                .get("email", String.class);
   }
 
-  public String getName(String token) {
+
+  public String getRole(String token) {
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-               .get("name", String.class);
+               .get("role", String.class);
   }
 
-  public String getMajor(String token) {
+  public String getCategory(String token) {
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
-               .get("major", String.class);
+               .get("category", String.class);
   }
 
   //토큰 유효기간 만료 확인
@@ -56,7 +57,7 @@ public class JWTUtil {
   }
 
   //JWTToken 생성
-  public String createJwt(String email, String username, String major, Long expiredMs) {
+  public String createJwt(String category, String email, String role,Long expiredMs) {
     /**
      * issuedAt 메서드로 토큰 발행 시각을 설정
      * expiration 메서드로 토큰의 만료 시각 설정 현재시각 + expiredMs
@@ -64,9 +65,9 @@ public class JWTUtil {
      * compact 메서드는 설정된 내용을 바탕으로 최종 JWT 토큰을 생성하고, 이를 String 형태로 반환
      */
     return Jwts.builder()
+        .claim("category", category)
                .claim("email", email)
-               .claim("username", username)
-               .claim("major", major)
+               .claim("role", role)
                .issuedAt(new Date(System.currentTimeMillis()))
                .expiration(new Date(System.currentTimeMillis() + expiredMs))
                .signWith(secretKey)

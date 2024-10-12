@@ -1,8 +1,11 @@
 package inyro.SMSinmungBE;
 
+import inyro.SMSinmungBE.repository.MemberRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,7 +24,8 @@ public class SmSinmungoBeApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**") //모든 경로에 CORS 설정 적용
 								.allowedOrigins("*") //모든 도메인을 허용
-								.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH"); //GET, POST, PUT, DELETE, PATCH 메서드를 허용
+								.allowedMethods("GET", "POST", "PUT", "DELETE",
+										"PATCH"); //GET, POST, PUT, DELETE, PATCH 메서드를 허용
 			}
 		};
 	}
