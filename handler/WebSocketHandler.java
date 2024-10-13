@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -25,6 +22,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
     private final MeetingService meetingService;
     private static final Map<String, String> users = new HashMap<>();
     private static final Map<String, String> rooms = new HashMap<>();
+    private List<String> handRaiseList = new ArrayList<>();
 
     public WebSocketHandler(SocketIOServer server, MeetingService meetingService) {
         this.server = server;
@@ -117,6 +115,19 @@ public class WebSocketHandler extends TextWebSocketHandler {
         printLog("onChatMessage", client, room);
     }
 
+    @OnEvent("handsup")
+    public void onHandsUp(SocketIOClient client, Map<String, Object> payload){
+        String userName = (String) payload.get("username");
+        System.out.println(userName);
+        handRaiseList.add(userName);
+        client.getNamespace().getBroadcastOperations().sendEvent("updateHandRaiseList", handRaiseList);
+    }
+    @OnEvent("handsdown")
+    public void onHandsDown(SocketIOClient client, Map<String, Object> payload){
+        String userName = (String) payload.get("username");
+        handRaiseList.remove(userName);
+        client.getNamespace().getBroadcastOperations().sendEvent("updateHandRaiseList", handRaiseList);
+    }
     @OnEvent("currentNum")
     public void onCurrentNum(SocketIOClient client, Map<String, Object> payload){
         String room = (String) payload.get("room");
