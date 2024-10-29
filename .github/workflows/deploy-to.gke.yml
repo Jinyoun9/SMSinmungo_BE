@@ -9,7 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-
       - name: Check out code
         uses: actions/checkout@v3
         with:
@@ -27,24 +26,18 @@ jobs:
 
       - name: Install gke-gcloud-auth-plugin
         run: |
-          # Google Cloud SDK 리포지토리 추가 및 공개 키 설정
           echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
           sudo apt-get install -y apt-transport-https ca-certificates gnupg
           sudo mkdir -p /usr/share/keyrings
           curl -sSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
           sudo apt-get update
-
-          # gke-gcloud-auth-plugin 설치
           sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
-      
-      
 
       - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker us-central1-docker.pkg.dev
 
-
-      - name: Build and push Docker image to Google Container Registry
+      - name: Build and push Docker image to Google Artifact Registry
         run: |
           IMAGE_NAME=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/docker/smsinmungo
           docker build -t $IMAGE_NAME:latest .
@@ -55,6 +48,4 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
         run: |
           gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
-          kubectl set image deployment/your-deployment-name your-container=$IMAGE_NAME:latest
-
-    
+          kubectl apply -f k8s/deployment.yaml
