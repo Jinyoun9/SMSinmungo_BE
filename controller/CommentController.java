@@ -35,7 +35,7 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<Void> likeComment(@PathVariable Long id) {
+    public ResponseEntity<Void> likeComment(@PathVariable("id") Long id) {
         try {
             commentService.likeComment(id);
             return ResponseEntity.ok().build();
@@ -45,7 +45,7 @@ public class CommentController {
     }
 
     @PostMapping("/{id}/dislike")
-    public ResponseEntity<Void> dislikeComment(@PathVariable Long id) {
+    public ResponseEntity<Void> dislikeComment(@PathVariable("id") Long id) {
         try {
             commentService.dislikeComment(id);
             return ResponseEntity.ok().build();
@@ -54,8 +54,8 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/{id}/delete") //comment 삭제
-    public ResponseEntity<Comment> deleteComment(@PathVariable Long id) {
+    @RequestMapping("/{id}/delete") //comment 삭제
+    public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id) {
         commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
