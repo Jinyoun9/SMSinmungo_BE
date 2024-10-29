@@ -10,11 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Set up Git authentication
-        run: echo "${{ secrets.GH_TOKEN }}" | git credential approve
-
       - name: Check out code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.1.0
