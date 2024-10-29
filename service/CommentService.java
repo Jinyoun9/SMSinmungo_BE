@@ -64,10 +64,10 @@ public class CommentService {
         commentRepository.save(comment); //dislike++ 후 저장
     }
 
-    @PostMapping("/{id}/delete") //comment 삭제
-    public ResponseEntity<Comment> deleteComment(@PathVariable Long id) {
-        commentService.deleteComment(id);
-        return ResponseEntity.noContent().build();
+    @Transactional
+    public void deleteComment(Long id) { //comment 삭제
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 comment 조회 실패"));
+        commentRepository.delete(comment);
     }
-
 }
