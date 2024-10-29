@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: SMSinmungo
+  redis:
+    host: localhost
+    port: 6380
