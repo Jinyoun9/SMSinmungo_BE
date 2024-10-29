@@ -64,4 +64,10 @@ public class CommentService {
         commentRepository.save(comment); //dislike++ 후 저장
     }
 
+    @PostMapping("/{id}/delete") //comment 삭제
+    public ResponseEntity<Comment> deleteComment(@PathVariable Long id) {
+        commentService.deleteComment(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
