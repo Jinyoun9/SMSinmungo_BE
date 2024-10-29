@@ -34,3 +34,5 @@ jobs:
         run: |
           gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
           kubectl set image deployment/your-deployment-name your-container=$IMAGE_NAME:latest
+      - name: Set up Git authentication
+        run: echo "${{ secrets.GH_TOKEN }}" | git credential approve
