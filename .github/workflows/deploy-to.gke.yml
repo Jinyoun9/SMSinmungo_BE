@@ -9,8 +9,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Set up Git authentication
+        run: echo "${{ secrets.GH_TOKEN }}" | git credential approve
+
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1.1.0
@@ -18,7 +22,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
 
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/setup-gcloud@v1.1.0
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
 
@@ -34,5 +38,5 @@ jobs:
         run: |
           gcloud container clusters get-credentials autopilot-cluster-1 --region us-central1
           kubectl set image deployment/your-deployment-name your-container=$IMAGE_NAME:latest
-      - name: Set up Git authentication
-        run: echo "${{ secrets.GH_TOKEN }}" | git credential approve
+
+    
