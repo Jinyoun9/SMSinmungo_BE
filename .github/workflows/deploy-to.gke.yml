@@ -24,7 +24,7 @@ jobs:
 
       - name: Build and push Docker image to Google Container Registry
         run: |
-          IMAGE_NAME=gcr.io/${{ secrets.GCP_PROJECT }}/smsinmungo
+          IMAGE_NAME=us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT }}/docker/smsinmungo
           docker build -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:latest
 
