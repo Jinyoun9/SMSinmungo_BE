@@ -2,15 +2,18 @@ package model;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long post_id;
+    private Long post_id; //=alarm_id
     @Column(nullable = false)
     private Long staff_id;
     @Column(nullable = false)
