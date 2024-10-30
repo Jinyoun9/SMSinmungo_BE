@@ -67,10 +67,12 @@ public class ReissueController {
     //토큰에서 email role을 뽑아서 새로운 access 토큰 생성
     String email = jwtUtil.getEmail(refresh);
     String role = jwtUtil.getRole(refresh);
+    String department = jwtUtil.getDepartment(refresh);
+    String major = jwtUtil.getmajor(refresh);
 
     //make new JWT
-    String newAccess = jwtUtil.createJwt("access", email, role, 600000L);
-    String newRefresh = jwtUtil.createJwt("refresh", email, role, 86400000L);
+    String newAccess = jwtUtil.createJwt("access", email, department, major,  role, 600000L);
+    String newRefresh = jwtUtil.createJwt("refresh", email, department, major, role, 86400000L);
 
     //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
     refreshRepository.deleteByRefresh(refresh);

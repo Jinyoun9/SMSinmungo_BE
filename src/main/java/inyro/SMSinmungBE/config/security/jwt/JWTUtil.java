@@ -41,6 +41,16 @@ public class JWTUtil {
                .get("role", String.class);
   }
 
+  public String getDepartment(String token) {
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+               .get("department", String.class);
+  }
+
+  public String getmajor(String token) {
+    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
+               .get("department", String.class);
+  }
+
   public String getCategory(String token) {
     return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload()
                .get("category", String.class);
@@ -57,7 +67,7 @@ public class JWTUtil {
   }
 
   //JWTToken 생성
-  public String createJwt(String category, String email, String role,Long expiredMs) {
+  public String createJwt(String category, String email, String department, String major, String role,Long expiredMs) {
     /**
      * issuedAt 메서드로 토큰 발행 시각을 설정
      * expiration 메서드로 토큰의 만료 시각 설정 현재시각 + expiredMs
@@ -68,6 +78,8 @@ public class JWTUtil {
         .claim("category", category)
                .claim("email", email)
                .claim("role", role)
+               .claim("department", department)
+               .claim("major", major)
                .issuedAt(new Date(System.currentTimeMillis()))
                .expiration(new Date(System.currentTimeMillis() + expiredMs))
                .signWith(secretKey)

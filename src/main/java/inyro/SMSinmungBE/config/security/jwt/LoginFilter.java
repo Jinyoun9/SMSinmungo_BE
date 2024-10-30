@@ -1,6 +1,7 @@
 package inyro.SMSinmungBE.config.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import inyro.SMSinmungBE.config.security.custom.CustomUserDetails;
 import inyro.SMSinmungBE.dto.LogInDto;
 import inyro.SMSinmungBE.repository.RefreshRepository;
 import jakarta.servlet.FilterChain;
@@ -71,20 +72,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
       throws IOException, ServletException {
 
 
-    //username 가져오기
-    String username = authentication.getName();
+    //username, department, major 가져오기
+    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+    String email = userDetails.getUsername();
+    String department = userDetails.getDepartment();
+    String major = userDetails.getMajor();
 
     //role 가져오기
     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-    Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-    GrantedAuthority auth = iterator.next();
-    String role = auth.getAuthority();
+    String role = authorities.iterator().next().getAuthority();
 
-    String access = jwtUtil.createJwt("access", username, role, ACCESS_TOKEN_EXPIRE_TIME);
-    String refresh = jwtUtil.createJwt("refresh", username, role, REFRESH_TOKEN_EXPIRE_TIME);
+    String access = jwtUtil.createJwt("access", email, department, major, role,  ACCESS_TOKEN_EXPIRE_TIME);
+    String refresh = jwtUtil.createJwt("refresh", email, department, major, role, REFRESH_TOKEN_EXPIRE_TIME);
 
     //db 에 refresh token 저장
-    addRefreshEntity(username, refresh, REFRESH_TOKEN_EXPIRE_TIME);
+    addRefreshEntity(email, refresh, REFRESH_TOKEN_EXPIRE_TIME);
 
     //응답 생성
     response.addHeader("access", access);
