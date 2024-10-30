@@ -38,9 +38,11 @@ public class Member {
   protected Member() {
   }
 
-  public Member(String email, String password, String role) {
+  public Member(String email, String password, String department, String major,String role) {
     this.email = email;
     this.password = password;
+    this.department = department;
+    this.major = major;
     this.role = role;
   }
 }

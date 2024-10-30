@@ -20,6 +20,8 @@ public class AuthService {
   public void signUp(SignUpDto signUpDto) {
     String email = signUpDto.getEmail();
     String password = signUpDto.getPassword();
+    String department = signUpDto.getDepartment();
+    String major = signUpDto.getMajor();
 
     Boolean isExist = memberRepository.existsByEmail(email);
 
@@ -27,7 +29,8 @@ public class AuthService {
       return ;
     }
 
-    Member member = new Member(email, bCryptPasswordEncoder.encode(password), "ROLE_ADMIN");
+
+    Member member = new Member(email, bCryptPasswordEncoder.encode(password), department, major , "ROLE_ADMIN");
     memberRepository.save(member);
   }
 

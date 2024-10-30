@@ -9,4 +9,5 @@ public class SignUpDto {
   private String password;
   private String major;
   private String name;
+  private String department;
 }
