@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: ./com/smsinmungo
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -13,5 +14,6 @@ services:
   frontend:
     build:
       context: ./src/smsinmungo
+      dockerfile: Dockerfile
     ports:
       - "3000:80"
