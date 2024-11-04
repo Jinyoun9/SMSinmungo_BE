@@ -1,7 +1,7 @@
 # Build 단계
 FROM gradle:jdk17 AS build
 WORKDIR /app
-COPY . .
+COPY ../.. .
 RUN gradle build -x test
 
 # 로컬에서 빌드 후, 빌드된 JAR 파일을 Docker 이미지로 복사하는 예제
