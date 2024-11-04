@@ -1,19 +1,17 @@
-# docker-compose.yml
 version: '3'
 services:
   backend:
     build:
-      context: ./com/smsinmungo
-      dockerfile: Dockerfile
+      context: ./src/main/java               # Spring Boot Dockerfile 위치
+      dockerfile: Dockerfile                 # backend 서비스용 Dockerfile
     ports:
       - "8080:8080"
     environment:
-      # 필요한 환경 변수 설정
       SPRING_PROFILES_ACTIVE: production
 
   frontend:
     build:
-      context: ./src/smsinmungo
-      dockerfile: Dockerfile
+      context: ./smsinmungo                  # React 프로젝트 위치
+      dockerfile: Dockerfile                 # frontend 서비스용 Dockerfile
     ports:
       - "3000:80"
