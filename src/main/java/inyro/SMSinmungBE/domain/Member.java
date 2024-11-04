@@ -14,7 +14,7 @@ public class Member {
 
   @Id
   @GeneratedValue
-  @Column(name = "user_id")
+  @Column(name = "member_id")
   private Long id;
 
 
@@ -35,6 +35,8 @@ public class Member {
 
   private String role;
 
+  private boolean enabled;
+
   protected Member() {
   }
 
@@ -44,5 +46,9 @@ public class Member {
     this.department = department;
     this.major = major;
     this.role = role;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 }

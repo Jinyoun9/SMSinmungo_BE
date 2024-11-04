@@ -71,7 +71,7 @@ public class JWTFilter extends OncePerRequestFilter {
     String department = jwtUtil.getDepartment(accessToken);
     String major = jwtUtil.getmajor(accessToken);
 
-    Member member = new Member(email, null, role);
+    Member member = new Member(email, null, role, department, major);
     CustomUserDetails customUserDetails = new CustomUserDetails(member);
 
     Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());

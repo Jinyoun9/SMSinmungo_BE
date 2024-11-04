@@ -54,7 +54,7 @@ public class SecurityConfig {
 
     //경로별 인가작업
     http.authorizeHttpRequests((auth) ->
-        auth.requestMatchers("/login", "/", "/join", "error").permitAll() //login, root, join 경로에는 모든 권한을 부여
+        auth.requestMatchers("/login", "/", "/join", "error", "/verify-email").permitAll() //login, root, join 경로에는 모든 권한을 부여
             .requestMatchers("/admin").hasRole("ADMIN") //admin 경로는 ADMIN 권한을 가진 자만이 허용
             .requestMatchers("/reissue").permitAll()
             .anyRequest().authenticated()); //다른 모든 경로는 로그인 한 사용자만 접근 가능
