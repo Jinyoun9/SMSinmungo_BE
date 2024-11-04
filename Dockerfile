@@ -5,7 +5,7 @@ WORKDIR /app/frontend
 # 프론트엔드 경로에 맞춰 파일 복사
 COPY src/smsinmungo/src/package*.json ./
 RUN npm install
-COPY src/smsinmungo/src ./  # 전체 프론트엔드 소스 복사
+COPY src/smsinmungo/src ./
 RUN npm run build
 
 # backend-build 단계
@@ -13,7 +13,7 @@ FROM gradle:7.6.0-jdk17 AS backend-build
 WORKDIR /app/backend
 
 # 백엔드 경로에 맞춰 파일 복사
-COPY src .  # 백엔드 소스 복사
+COPY src .
 RUN gradle bootJar
 
 # 런타임 이미지
