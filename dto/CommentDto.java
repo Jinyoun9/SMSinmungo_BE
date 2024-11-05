@@ -1,7 +1,6 @@
 package inyro.demo.dto;
 
-import inyro.demo.model.Staff;
-import inyro.demo.model.Student;
+import inyro.demo.model.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentDto {
 
-    private Staff staff;
-    private Student student;
+    private Member member;
     private String content;
 }
