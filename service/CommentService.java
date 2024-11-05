@@ -26,7 +26,7 @@ public class CommentService {
     public Comment saveComment(CommentDto commentDto) {
         Comment comment; //Comment 객체 선언
 
-        if (commentDto.getMember().getRole().equals("staff")) { //회원이 staff 이면 구분
+        if (commentDto.getMember().getRole().equals("ADMIN")) { //회원이 staff 이면 구분
             comment = Comment.builder()
                     .member(commentDto.getMember()) //staff
                     .content(commentDto.getContent())
