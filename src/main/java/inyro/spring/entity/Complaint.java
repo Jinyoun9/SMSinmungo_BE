@@ -1,6 +1,8 @@
 package inyro.spring.entity;
 
 import inyro.spring.dto.ComplaintRequestsDto;
+import inyro.spring.enums.Category;
+import inyro.spring.enums.ComplaintStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,26 +29,33 @@ public class Complaint extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
-    @Column(nullable = false)
+
+    @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "integer default 0",nullable = false)
     private int good;
 
-    @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ComplaintStatus status;
 
     public Complaint(ComplaintRequestsDto requestsDto) {
         this.author = requestsDto.getAuthor();
         this.password = requestsDto.getPassword();
         this.title = requestsDto.getTitle();
         this.contents = requestsDto.getContents();
-        this.category = requestsDto.getCategory();
-        this.view = 0;
-        this.good = 0;
-        this.status = "NEW";
+        this.category = Category.valueOf(requestsDto.getCategory());
+        this.status = ComplaintStatus.NEW; // 기본값 설정
+        //this.department = requestDto.getDepartment();
+    }
+
+    public void update(ComplaintRequestsDto dto) {
+        this.title = dto.getTitle();
+        this.contents = dto.getContents();
+        this.category = Category.valueOf(dto.getCategory());
+        this.status = dto.getStatus(); //관리자가 수정할 때
     }
 }

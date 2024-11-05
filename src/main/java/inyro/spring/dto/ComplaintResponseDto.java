@@ -1,6 +1,7 @@
 package inyro.spring.dto;
 
 import inyro.spring.entity.Complaint;
+import inyro.spring.enums.ComplaintStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,6 @@ import java.time.LocalDateTime;
 public class ComplaintResponseDto {
     private Long id;
     private String author;
-    private String password;
     private String title;
     private String contents;
     private String category;
@@ -19,17 +19,23 @@ public class ComplaintResponseDto {
     private LocalDateTime modifiedAt;
     private int view;
     private int good;
-    private String status;
+    private ComplaintStatus status;
 
-    public ComplaintResponseDto(Complaint entity){
-        this.id = entity.getId();
-        this.author = entity.getAuthor();
-        this.title = entity.getTitle();
-        this.contents = entity.getContents();
-        this.createdAt = entity.getCreatedAt();
-        this.modifiedAt = entity.getModifiedAt();
-        this.view = entity.getView();
-        this.good = entity.getGood();
-        this.status = entity.getStatus();
+    //private String department;
+
+    public ComplaintResponseDto(Complaint complaint){
+        this.id = complaint.getId();
+        this.author = complaint.getAuthor();
+        this.title = complaint.getTitle();
+        this.contents = complaint.getContents();
+        this.category = complaint.getCategory();
+        this.createdAt = complaint.getCreatedAt();
+        this.modifiedAt = complaint.getModifiedAt();
+        this.view = complaint.getView();
+        this.good = complaint.getGood();
+        this.status = complaint.getStatus();
+
+        //this.department = complaint.getDepartment();
     }
+
 }
