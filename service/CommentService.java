@@ -3,6 +3,7 @@ package inyro.demo.service;
 import inyro.demo.dto.CommentDto;
 import inyro.demo.exception.CommentNotFoundException;
 import inyro.demo.model.Comment;
+import inyro.demo.model.JWTUtil;
 import inyro.demo.repository.CommentRepository;
 
 
@@ -16,19 +17,22 @@ import java.time.LocalDateTime;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final JWTUtil jwtutil;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, JWTUtil jwtUtil) {
         this.commentRepository = commentRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     @Transactional
-    public Comment saveComment(CommentDto commentDto) {
+    public Comment saveComment(CommentDto commentDto, String token) {
         Comment comment; //Comment 객체 선언
+        String role = jwtUtil.getRole(token); //token 에서 role 추출
 
-        if (commentDto.getMember().getRole().equals("ADMIN")) { //회원이 staff 이면 구분
+        if (role.equals("ADMIN")) { //회원이 admin 이면 구분
             comment = Comment.builder()
-                    .member(commentDto.getMember()) //staff
+                    .member(commentDto.getMember()) 
                     .content(commentDto.getContent())
                     .write_date(LocalDateTime.now())
                     .good(0)
@@ -37,7 +41,7 @@ public class CommentService {
 
         } else { //회원이 student
             comment = Comment.builder()
-                    .member(commentDto.getMember()) //student
+                    .member(commentDto.getMember()) 
                     .content(commentDto.getContent())
                     .write_date(LocalDateTime.now())
                     .good(0)
