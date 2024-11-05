@@ -54,9 +54,13 @@ public class CommentController {
         }
     }
 
-    @RequestMapping("/{id}/delete") //comment 삭제
+    @RequestMapping("/{id}/delete")
     public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id) {
-        commentService.deleteComment(id);
-        return ResponseEntity.noContent().build();
+        try {
+            commentService.deleteComment(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }
