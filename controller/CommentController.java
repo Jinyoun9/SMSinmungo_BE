@@ -24,12 +24,12 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/comment/write")
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult) {
+    @PostMapping("/comment/write/{token}")
+    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
-            Comment comment = commentService.saveComment(commentDto);
+            Comment comment = commentService.saveComment(commentDto, token);
             return ResponseEntity.ok(comment);
         }
     }
