@@ -20,22 +20,20 @@ public class ComplaintResponseDto {
     private int view;
     private int good;
     private ComplaintStatus status;
-
-    //private String department;
+    private String department;
 
     public ComplaintResponseDto(Complaint complaint){
         this.id = complaint.getId();
         this.author = complaint.getAuthor();
         this.title = complaint.getTitle();
         this.contents = complaint.getContents();
-        this.category = complaint.getCategory();
+        this.category = complaint.getCategory().getDescription();
         this.createdAt = complaint.getCreatedAt();
         this.modifiedAt = complaint.getModifiedAt();
         this.view = complaint.getView();
         this.good = complaint.getGood();
         this.status = complaint.getStatus();
-
-        //this.department = complaint.getDepartment();
+        this.department = complaint.getDepartment();
     }
 
 }

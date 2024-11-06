@@ -29,9 +29,11 @@ public class Complaint extends Timestamped {
     @Column(nullable = false)
     private String contents;
 
+    @Column(nullable = false)
+    private String department;
+
     @Enumerated(EnumType.STRING)
     private Category category;
-
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int view;
@@ -47,7 +49,8 @@ public class Complaint extends Timestamped {
         this.password = requestsDto.getPassword();
         this.title = requestsDto.getTitle();
         this.contents = requestsDto.getContents();
-        this.category = Category.valueOf(requestsDto.getCategory());
+        this.department = requestsDto.getDepartment();
+        this.category = Category.민원;
         this.status = ComplaintStatus.NEW; // 기본값 설정
         //this.department = requestDto.getDepartment();
     }
@@ -55,7 +58,8 @@ public class Complaint extends Timestamped {
     public void update(ComplaintRequestsDto dto) {
         this.title = dto.getTitle();
         this.contents = dto.getContents();
-        this.category = Category.valueOf(dto.getCategory());
+        this.department = dto.getDepartment();
+        this.category = dto.getCategory();
         this.status = dto.getStatus(); //관리자가 수정할 때
     }
 }
