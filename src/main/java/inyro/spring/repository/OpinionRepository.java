@@ -1,3 +1,5 @@
+/*
+
 package inyro.spring.repository;
 
 import inyro.spring.entity.Opinion;
@@ -8,3 +10,4 @@ import java.util.List;
 public interface OpinionRepository extends JpaRepository<Opinion, Long> {
     List<Opinion> findAllByOrderByCreatedAtDesc();
 }
+*/

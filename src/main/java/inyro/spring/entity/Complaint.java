@@ -1,3 +1,5 @@
+/*
+
 package inyro.spring.entity;
 
 import inyro.spring.dto.ComplaintRequestsDto;
@@ -63,3 +65,4 @@ public class Complaint extends Timestamped {
         this.status = dto.getStatus(); //관리자가 수정할 때
     }
 }
+*/

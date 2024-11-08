@@ -1,7 +1,9 @@
 package inyro.spring.dto;
 
-import inyro.spring.entity.Complaint;
+//import inyro.spring.entity.Complaint;
+import inyro.spring.entity.Post;
 import inyro.spring.enums.ComplaintStatus;
+import inyro.spring.enums.Department;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,9 +22,9 @@ public class ComplaintResponseDto {
     private int view;
     private int good;
     private ComplaintStatus status;
-    private String department;
+    private Department department;
 
-    public ComplaintResponseDto(Complaint complaint){
+    public ComplaintResponseDto(Post complaint){
         this.id = complaint.getId();
         this.author = complaint.getAuthor();
         this.title = complaint.getTitle();

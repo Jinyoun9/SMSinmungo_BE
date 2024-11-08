@@ -1,3 +1,5 @@
+
+/*
 package inyro.spring.Service;
 
 import inyro.spring.dto.OpinionRequestsDto;
@@ -60,3 +62,4 @@ public class OpinionService {
         return new SuccessResponseDto(true);
     }
 }
+*/

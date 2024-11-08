@@ -1,3 +1,5 @@
+/*
+
 package inyro.spring.controller;
 
 import inyro.spring.Service.OpinionService;
@@ -32,3 +34,4 @@ public class OpinionController {
         return opinionService.deletePost(id, requestsDto);  // 메서드 이름 수정
     }
 }
+*/

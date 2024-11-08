@@ -1,4 +1,6 @@
-package inyro.spring.contoller;
+/*
+
+package inyro.spring.controller;
 
 import inyro.spring.Service.ComplaintService;
 import inyro.spring.dto.ComplaintRequestsDto;
@@ -39,3 +41,5 @@ public class ComplaintController {
         return complaintService.deletePost(id, requestsDto);
     }
 }
+
+ */

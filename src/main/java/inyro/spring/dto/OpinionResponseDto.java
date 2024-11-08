@@ -1,6 +1,7 @@
 package inyro.spring.dto;
 
-import inyro.spring.entity.Opinion;
+//import inyro.spring.entity.Opinion;
+import inyro.spring.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,7 @@ public class OpinionResponseDto {
     private int good;
 
 
-    public OpinionResponseDto(Opinion opinion){
+    public OpinionResponseDto(Post opinion){
         this.id = opinion.getId();
         this.author = opinion.getAuthor();
         this.category = "대화";
