@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("/univ")
 public class UnivPostController {
 
     private final UnivPostService univPostService;
@@ -22,7 +22,7 @@ public class UnivPostController {
         this.univPostService = univPostService;
     }
 
-    @RequestMapping("/univ/post/{token}")
+    @RequestMapping("/post/{token}")
     public ResponseEntity<UnivPost> createPost(@RequestBody UnivPostDto univPostDto, BindingResult bindingResult, String token) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -32,7 +32,7 @@ public class UnivPostController {
         }
     }
 
-    @RequestMapping("/univ/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<UnivPost> deletePost(@PathVariable("id") Long id) {
         try {
             univPostService.deletePost(id);
@@ -43,7 +43,7 @@ public class UnivPostController {
 
     }
 
-    @RequestMapping("/univ/like/{id}")
+    @PatchMapping("/like/{id}")
     public ResponseEntity<Void> likePost(@PathVariable("id") Long id) {
         try {
             univPostService.likePost(id);
