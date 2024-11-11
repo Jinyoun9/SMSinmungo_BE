@@ -24,7 +24,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/comment/write/{token}")
+    @PostMapping("/write/{token}")
     public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -34,7 +34,7 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/{id}/like")
+    @PatchMapping("/like/{id}")
     public ResponseEntity<Void> likeComment(@PathVariable("id") Long id) {
         try {
             commentService.likeComment(id);
@@ -44,7 +44,7 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/{id}/dislike")
+    @PatchMapping("/dislike/{id}")
     public ResponseEntity<Void> dislikeComment(@PathVariable("id") Long id) {
         try {
             commentService.dislikeComment(id);
@@ -54,7 +54,7 @@ public class CommentController {
         }
     }
 
-    @RequestMapping("/{id}/delete")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id) {
         try {
             commentService.deleteComment(id);
