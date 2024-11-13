@@ -1,16 +1,13 @@
-package inyro.demo.controller;
+package com.smsinmungo.controller;
 
-import inyro.demo.dto.UnivPostDto;
-import inyro.demo.model.UnivPost;
-import inyro.demo.service.UnivPostService;
+import com.smsinmungo.dto.UnivPostDto;
+import com.smsinmungo.model.UnivPost;
+import com.smsinmungo.service.UnivPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController("/univ")
 public class UnivPostController {

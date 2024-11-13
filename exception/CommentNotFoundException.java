@@ -1,4 +1,4 @@
-package inyro.demo.exception;
+package com.smsinmungo.exception;
 
 public class CommentNotFoundException extends RuntimeException{
 

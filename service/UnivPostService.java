@@ -1,10 +1,9 @@
-package inyro.demo.service;
+package com.smsinmungo.service;
 
-import inyro.demo.dto.UnivPostDto;
-import inyro.demo.model.JWTUtil;
-import inyro.demo.model.UnivPost;
-import inyro.demo.repository.UnivPostRepository;
 
+import com.smsinmungo.model.JWTUtil;
+import com.smsinmungo.model.UnivPost;
+import com.smsinmungo.repository.UnivPostRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ public class UnivPostService {
     }
 
     @Transactional
-    public void savePost(UnivPostDto univPostDto, String token) {
+    public void savePost(com.smsinmungo.dto.UnivPostDto univPostDto, String token) {
         UnivPost univPost;
 
         String role = jwtUtil.getRole(token); //token 에서 role 추출

@@ -1,4 +1,4 @@
-package inyro.demo.model;
+package com.smsinmungo.model;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

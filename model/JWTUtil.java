@@ -1,4 +1,4 @@
-package inyro.demo.model;
+package com.smsinmungo.model;
 
 import io.jsonwebtoken.Jwts;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +14,7 @@ public class JWTUtil {
     //객체 키 생성
     private SecretKey secretKey;
 
-    public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
+    public JWTUtil(@Value("secret") String secret) { // Before: ${spring.jwt.secret}
         //SecretKeySpec 객체를 생성하여 secretKey 필드에 할당 -> SecretKeySpec 객체는 SecretKey 인터페이스를 구현하는 객체
         //secret 문자열을 UTF-8 형식의 바이트 배열로 변환
         //HMAC-SHA256 알고리즘을 설정하여 JWT 서명에 사용될 알고리즘을 지정 -> JWT 의 기본 알고리즘

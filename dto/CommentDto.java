@@ -1,6 +1,6 @@
-package inyro.demo.dto;
+package com.smsinmungo.dto;
 
-import inyro.demo.model.Member;
+import com.smsinmungo.model.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

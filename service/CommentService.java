@@ -1,10 +1,10 @@
-package inyro.demo.service;
+package com.smsinmungo.service;
 
-import inyro.demo.dto.CommentDto;
-import inyro.demo.exception.CommentNotFoundException;
-import inyro.demo.model.Comment;
-import inyro.demo.model.JWTUtil;
-import inyro.demo.repository.CommentRepository;
+import com.smsinmungo.dto.CommentDto;
+import com.smsinmungo.exception.CommentNotFoundException;
+import com.smsinmungo.model.Comment;
+import com.smsinmungo.model.JWTUtil;
+import com.smsinmungo.repository.CommentRepository;
 
 
 import jakarta.transaction.Transactional;
@@ -16,8 +16,9 @@ import java.time.LocalDateTime;
 @Service
 public class CommentService {
 
+    @Autowired
     private final CommentRepository commentRepository;
-    private final JWTUtil jwtutil;
+    private final JWTUtil jwtUtil;
 
     @Autowired
     public CommentService(CommentRepository commentRepository, JWTUtil jwtUtil) {

@@ -1,6 +1,6 @@
-package inyro.demo.model;
+package com.smsinmungo.model;
 
-import inyro.demo.dto.UnivPostDto;
+import com.smsinmungo.dto.UnivPostDto;
 import jakarta.persistence.*;
 import lombok.*;
 

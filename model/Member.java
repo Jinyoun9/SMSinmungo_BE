@@ -1,4 +1,4 @@
-package inyro.demo.model;
+package com.smsinmungo.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

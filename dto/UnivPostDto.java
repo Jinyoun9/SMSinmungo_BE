@@ -1,5 +1,5 @@
-package inyro.demo.dto;
-import inyro.demo.model.Member;
+package com.smsinmungo.dto;
+import com.smsinmungo.model.Member;
 import lombok.*;
 
 @Data
