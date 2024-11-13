@@ -23,7 +23,7 @@ public class OpinionResponseDto {
     public OpinionResponseDto(Post opinion){
         this.id = opinion.getId();
         this.author = opinion.getAuthor();
-        this.category = "대화";
+        this.category = "의견";
         this.contents = opinion.getContents();
         this.createdAt = opinion.getCreatedAt();
         this.modifiedAt = opinion.getModifiedAt();

@@ -1,7 +1,9 @@
 package inyro.spring.dto;
 
 //import inyro.spring.entity.Complaint;
+
 import inyro.spring.entity.Post;
+import inyro.spring.enums.Category;
 import inyro.spring.enums.ComplaintStatus;
 import inyro.spring.enums.Department;
 import lombok.Getter;
@@ -16,7 +18,7 @@ public class ComplaintResponseDto {
     private String author;
     private String title;
     private String contents;
-    private String category;
+    private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int view;
@@ -24,12 +26,12 @@ public class ComplaintResponseDto {
     private ComplaintStatus status;
     private Department department;
 
-    public ComplaintResponseDto(Post complaint){
+    public ComplaintResponseDto(Post complaint) {
         this.id = complaint.getId();
         this.author = complaint.getAuthor();
         this.title = complaint.getTitle();
         this.contents = complaint.getContents();
-        this.category = complaint.getCategory().getDescription();
+        this.category = complaint.getCategory();
         this.createdAt = complaint.getCreatedAt();
         this.modifiedAt = complaint.getModifiedAt();
         this.view = complaint.getView();
@@ -37,5 +39,4 @@ public class ComplaintResponseDto {
         this.status = complaint.getStatus();
         this.department = complaint.getDepartment();
     }
-
 }

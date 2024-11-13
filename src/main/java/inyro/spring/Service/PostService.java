@@ -2,8 +2,7 @@ package inyro.spring.Service;
 
 import inyro.spring.dto.*;
 import inyro.spring.entity.Post;
-import inyro.spring.enums.Category;
-import inyro.spring.enums.Department;
+import inyro.spring.enums.*;
 import inyro.spring.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,16 +17,31 @@ public class PostService {
 
     // 민원 목록 조회
     @Transactional(readOnly = true)
-    public List<ComplaintResponseDto> getComplaints() {
-        return postRepository.findByCategoryOrderByModifiedAtDesc(Category.민원)
-                .stream().map(ComplaintResponseDto::new).toList();
-    }
+    public CursorResult<ComplaintResponseDto> getComplaintsWithCursor(Long cursor, int size) {
+        Long startCursor = (cursor == null) ? postRepository.findFirstByCategoryOrderByIdDesc(Category.민원).map(Post::getId).orElse(Long.MAX_VALUE) : cursor;
+
+        List<Post> posts = postRepository.findByCategoryWithCursor(Category.민원, startCursor, size+1);
+
+        boolean hasNext = posts.size() > size;
+        List<Post> content = hasNext ? posts.subList(0, size) : posts;
+
+        Long nextCursor = content.isEmpty() ? null : content.get(content.size() -1).getId();
+
+        return new CursorResult<>(content.stream().map(ComplaintResponseDto::new).toList(), nextCursor, hasNext);
+    }   
 
     // 의견 목록 조회
     @Transactional(readOnly = true)
-    public List<OpinionResponseDto> getOpinions() {
-        return postRepository.findByCategoryOrderByCreatedAtDesc(Category.의견)
-                .stream().map(OpinionResponseDto::new).toList();
+    public CursorResult<OpinionResponseDto> getOpinionsWithCursor(Long cursor, int size) {
+        Long startCursor = (cursor == null) ? postRepository.findFirstByCategoryOrderByIdDesc(Category.의견).map(Post::getId).orElse(Long.MAX_VALUE) : cursor;
+        List<Post> posts = postRepository.findByCategoryWithCursor(Category.의견, startCursor, size+1);
+
+        boolean hasNext = posts.size() > size;
+        List<Post> content = hasNext ? posts.subList(0, size) : posts;
+
+        Long nextCursor = content.isEmpty() ? null : content.get(content.size() -1).getId();
+
+        return new CursorResult<>(content.stream().map(OpinionResponseDto::new).toList(), nextCursor, hasNext);
     }
 
     // 민원 작성
@@ -37,7 +51,6 @@ public class PostService {
         postRepository.save(post);
         return new ComplaintResponseDto(post);
     }
-
     // 의견 작성
     @Transactional
     public OpinionResponseDto createOpinion(OpinionRequestsDto requestsDto) {
@@ -117,5 +130,51 @@ public class PostService {
     public List<ComplaintResponseDto> getPostsByDepartment(Department department) {
         return postRepository.findByDepartment(department)
                 .stream().map(ComplaintResponseDto::new).toList();
+    }
+
+    //민원 조회수 증가 
+    @Transactional
+    public ComplaintResponseDto getComplaint(Long id, String userId) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        
+        post.incrementView(userId); 
+        return new ComplaintResponseDto(post);
+    }
+
+    //의견 조회수 증가
+    @Transactional
+    public OpinionResponseDto getOpinion(Long id, String userId) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        
+        post.incrementView(userId);
+        return new OpinionResponseDto(post);
+    }
+
+    //좋아요 추가
+    @Transactional
+    public LikeResponseDto addLike(Long id, String userId) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+        
+        if (!post.incrementGood(userId)) {
+            throw new IllegalStateException("이미 좋아요를 누른 게시물입니다.");
+        }
+        
+        return new LikeResponseDto(post);
+    }
+
+    //좋아요 취소 
+    @Transactional
+    public LikeResponseDto removeLike(Long id, String userId) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
+
+        if (!post.decrementGood(userId)) {
+            throw new IllegalStateException("좋아요를 누르지 않은 게시물입니다.");
+        }
+
+        return new LikeResponseDto(post);
     }
 }
