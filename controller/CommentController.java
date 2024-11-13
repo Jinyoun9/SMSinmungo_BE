@@ -1,5 +1,6 @@
 package com.smsinmungo.controller;
 
+import com.smsinmungo.docs.CommentDocs;
 import com.smsinmungo.dto.CommentDto;
 import com.smsinmungo.exception.CommentNotFoundException;
 import com.smsinmungo.model.Comment;
@@ -17,19 +18,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/comment")
-public class CommentController {
+public class CommentController implements CommentDocs {
     @Autowired
     private final CommentService commentService;
 
-//    @PostMapping("/write/{token}")
-//    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token) {
-//        if (bindingResult.hasErrors()) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        } else {
-//            Comment comment = commentService.saveComment(commentDto, token);
-//            return ResponseEntity.ok(comment);
-//        }
-//    }
+    @PostMapping("/write/{token}")
+    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            Comment comment = commentService.saveComment(commentDto, token);
+            return ResponseEntity.ok(comment);
+        }
+    }
 
     @PatchMapping("/like/{id}")
     public ResponseEntity<Void> likeComment(@PathVariable("id") Long id) {
