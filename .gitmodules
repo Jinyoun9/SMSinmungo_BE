@@ -1,0 +1,3 @@
+[submodule "src/main/java/com/smsinmungo"]
+	path = src/main/java/com/smsinmungo
+	url = https://github.com/Jinyoun9/SMSinmungo_BE.git
