@@ -1,7 +1,6 @@
 package com.smsinmungo.docs;
 
 import com.smsinmungo.dto.UnivPostDto;
-import com.smsinmungo.model.Comment;
 import com.smsinmungo.model.UnivPost;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
