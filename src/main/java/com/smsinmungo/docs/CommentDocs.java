@@ -14,20 +14,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CommentDocs {
     @Operation(summary = "좋아요", description = "댓글의 id를 매개변수로 받아 해당 댓글의 좋아요 +1.")
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "유저 정보 저장 실패(유저 중복)") })
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "댓글 좋아요 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "댓글 좋아요 실패") })
     public ResponseEntity<Void> likeComment(@PathVariable("id") Long id);
 
     @Operation(summary = "싫어요", description = "댓글의 id를 매개변수로 받아 해당 댓글의 싫어요 +1.")
         @ApiResponses(value = {
-                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
-                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "유저 정보 저장 실패(유저 중복)") })
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "댓글 싫어요 성공"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "댓글 싫어요 실패") })
         public ResponseEntity<Void> dislikeComment(@PathVariable("id") Long id);
 
     @Operation(summary = "삭제", description = "댓글의 id를 매개변수로 받아 해당 댓글을 삭제.")
         @ApiResponses(value = {
-                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "회원가입 성공"),
-                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "유저 정보 저장 실패(유저 중복)") })
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "댓글 삭제 성공"),
+                @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "댓글 삭제 실패") })
         public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id);
 
+    @Operation(summary = "댓글생성", description = "token을 String으로 받아 role 추출후 댓글 생성")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "댓글 생성 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "댓글 생성 실패") })
+    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token);
 }
