@@ -5,7 +5,7 @@ spring:
     host: localhost
     port: 6380
   datasource:
-    url: jdbc:mariadb://localhost:3306/upcraft
+    url: jdbc:mariadb://localhost:3306/sys
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password:
