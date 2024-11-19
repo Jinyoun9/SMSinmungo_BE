@@ -1,7 +1,6 @@
 package com.smsinmungo.service;
 
-
-import com.smsinmungo.model.JWTUtil;
+import com.smsinmungo.config.security.jwt.JWTUtil;
 import com.smsinmungo.model.UnivPost;
 import com.smsinmungo.repository.UnivPostRepository;
 import jakarta.transaction.Transactional;

@@ -1,9 +1,10 @@
 package com.smsinmungo.service;
 
+import com.smsinmungo.config.security.jwt.JWTUtil;
 import com.smsinmungo.dto.CommentDto;
 import com.smsinmungo.exception.CommentNotFoundException;
 import com.smsinmungo.model.Comment;
-import com.smsinmungo.model.JWTUtil;
+
 import com.smsinmungo.repository.CommentRepository;
 
 

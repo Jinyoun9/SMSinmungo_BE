@@ -1,5 +1,5 @@
 package com.smsinmungo.dto;
-import com.smsinmungo.model.Member;
+import com.smsinmungo.domain.Member;
 import lombok.*;
 
 @Data

@@ -1,5 +1,6 @@
 package com.smsinmungo.model;
 
+import com.smsinmungo.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
