@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("/univ")
-public class UnivPostController {
+public class UnivPostController implements UnivPostDocs {
 
     private final UnivPostService univPostService;
 
