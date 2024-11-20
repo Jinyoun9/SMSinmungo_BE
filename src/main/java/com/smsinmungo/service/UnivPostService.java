@@ -1,19 +1,28 @@
 package com.smsinmungo.service;
 
 import com.smsinmungo.config.security.jwt.JWTUtil;
+import com.smsinmungo.domain.Member;
+import com.smsinmungo.dto.UnivPostDto;
 import com.smsinmungo.model.UnivPost;
+import com.smsinmungo.repository.MemberRepository;
 import com.smsinmungo.repository.UnivPostRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UnivPostService {
 
     private final UnivPostRepository univPostRepository;
+    private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
-    public UnivPostService(UnivPostRepository univPostRepository, JWTUtil jwtUtil) {
+    public UnivPostService(UnivPostRepository univPostRepository, MemberRepository memberRepository, JWTUtil jwtUtil) {
         this.univPostRepository = univPostRepository;
+        this.memberRepository = memberRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -27,9 +36,7 @@ public class UnivPostService {
                     .title(univPostDto.getTitle())
                     .contents(univPostDto.getContents())
                     .author(univPostDto.getAuthor())
-                    .good(univPostDto.getGood())
                     .category(univPostDto.getCategory())
-                    .view(univPostDto.getView())
                     .build();
             univPostRepository.save(univPost);
         }
@@ -50,4 +57,38 @@ public class UnivPostService {
         univPostRepository.save(univPost); //like++ 후 저장
     }
 
+    public void postTest(UnivPostDto univPostDto, String token) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+        System.out.println(jwtUtil.getEmail(token));
+
+        UnivPost univPost = UnivPost.builder()
+                .author(univPostDto.getAuthor())
+                .title(univPostDto.getTitle())
+                .contents(univPostDto.getContents())
+                .category(univPostDto.getCategory())
+                .member(member)
+                .createdAt(localDateTime)
+                .modifiedAt(localDateTime)
+                .build();
+
+        univPostRepository.save(univPost);
+
+    }
+    public List<UnivPost> getTest(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+        System.out.println(jwtUtil.getEmail(token));
+
+        List<UnivPost> univPostList = univPostRepository.findAllByMemberId(member.getId());
+
+        return univPostList;
+    }
 }
