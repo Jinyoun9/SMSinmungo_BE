@@ -150,7 +150,7 @@ public class Post extends Timestamped {
     }
 
     public Post(ComplaintRequestsDto requestsDto) {
-        this.author = requestsDto.getAuthor();
+        //this.author = requestsDto.getAuthor();
         this.password = requestsDto.getPassword();
         this.title = requestsDto.getTitle();
         this.contents = requestsDto.getContents();
@@ -178,5 +178,9 @@ public class Post extends Timestamped {
     public void update(OpinionRequestsDto requestsDto) {
         this.title = requestsDto.getTitle();
         this.contents = requestsDto.getContents();
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

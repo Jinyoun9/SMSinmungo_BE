@@ -3,10 +3,10 @@ package inyro.spring.controller;
 import inyro.spring.Service.PostService;
 import inyro.spring.dto.*;
 import inyro.spring.enums.Department;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -34,17 +34,32 @@ public class PostController {
         return postService.getOpinionsWithCursor(cursor,size);
     }
 
-    // 민원 작성
+    // 민원 작성 - STUDENT만 가능 
+    @Operation(
+        summary = "민원 작성",
+        description = "학생(STUDENT) 권한을 가진 사용자만 민원을 작성할 수 있습니다."
+    )
     @PostMapping("/complaints")
-    public ComplaintResponseDto createComplaint(@RequestBody ComplaintRequestsDto requestsDto) {
-        return postService.createComplaint(requestsDto);
+    public ComplaintResponseDto createComplaint(
+        @RequestBody ComplaintRequestsDto requestsDto,
+        @RequestHeader("access") String token 
+    ) {
+        return postService.createComplaint(requestsDto, token);
     }
 
-    // 의견 작성
+    // 의견 작성 - STUDENT만 가능 
+    @Operation(
+        summary = "의견 작성",
+        description = "학생(STUDENT) 권한을 가진 사용자만 의견을 작성할 수 있습니다."
+    )
     @PostMapping("/opinions")
-    public OpinionResponseDto createOpinion(@RequestBody OpinionRequestsDto requestsDto) {
-        return postService.createOpinion(requestsDto);
+    public OpinionResponseDto createOpinion(
+        @RequestBody OpinionRequestsDto requestsDto,
+        @RequestHeader("access") String token
+    ) {
+        return postService.createOpinion(requestsDto, token);
     }
+
 
     // 선택 민원 조회 (조회수 증가)
     @GetMapping("/complaints/{id}")
@@ -72,24 +87,6 @@ public class PostController {
     @PutMapping("/complaints/{id}")
     public ComplaintResponseDto updateComplaint(@PathVariable Long id, @RequestBody ComplaintRequestsDto requestsDto) throws Exception {
         return postService.updateComplaint(id, requestsDto);
-    }
-/*
-    // 의견 수정
-    @PutMapping("/opinions/{id}")
-    public OpinionResponseDto updateOpinion(@PathVariable Long id, @RequestBody OpinionRequestsDto requestsDto) throws Exception {
-        return postService.updateOpinion(id, requestsDto);
-    }
-*/
-    // 민원 삭제
-    @DeleteMapping("/complaints/{id}")
-    public SuccessResponseDto deleteComplaint(@PathVariable Long id, @RequestBody ComplaintRequestsDto requestsDto) throws Exception {
-        return postService.deleteComplaint(id, requestsDto);
-    }
-
-    // 의견 삭제
-    @DeleteMapping("/opinions/{id}")
-    public SuccessResponseDto deleteOpinion(@PathVariable Long id, @RequestBody OpinionRequestsDto requestsDto) throws Exception {
-        return postService.deleteOpinion(id, requestsDto);
     }
 
     // 좋아요 추가

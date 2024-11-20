@@ -4,16 +4,34 @@ import inyro.spring.dto.*;
 import inyro.spring.entity.Post;
 import inyro.spring.enums.*;
 import inyro.spring.repository.PostRepository;
+import inyro.spring.util.TempJwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
+    private static final String ROLE_STUDENT = "ROLE_STUDENT";
+    private static final String STUDENT_ONLY_MESSAGE = "학생만 %s을(를) 작성할 수 있습니다.";
+
     private final PostRepository postRepository;
+    private final TempJwtUtil jwtUtil;
+    private final EmailService emailService;
+
+    // 임시 관리자 이메일 맵 - Department enum과 일치
+    private final Map<String, String> adminEmails = Map.of(
+        "시설", "facility.admin@example.com",
+        "행정", "admin.admin@example.com",
+        "보건", "health.admin@example.com",
+        "교육", "education.admin@example.com"
+    );
+
 
     // 민원 목록 조회
     @Transactional(readOnly = true)
@@ -46,32 +64,90 @@ public class PostService {
 
     // 민원 작성
     @Transactional
-    public ComplaintResponseDto createComplaint(ComplaintRequestsDto requestsDto) {
+    public ComplaintResponseDto createComplaint(ComplaintRequestsDto requestsDto, String token) {
+        String role = jwtUtil.getRole(token);
+        String email = jwtUtil.getEmail(token);
+
+         if (!ROLE_STUDENT.equals(role)) {
+            throw new IllegalStateException(String.format(STUDENT_ONLY_MESSAGE, "민원"));
+        }
+
         Post post = new Post(requestsDto);
-        postRepository.save(post);
-        return new ComplaintResponseDto(post);
+        post.setAuthor(email);
+        Post savedPost = postRepository.save(post);
+
+        // NEW 상태이고 부서가 지정된 경우에만 이메일 발송
+        if (savedPost.getStatus() == ComplaintStatus.NEW && savedPost.getDepartment() != null) {
+            String adminEmail = adminEmails.get(savedPost.getDepartment().toString());
+            if (adminEmail != null) {
+                sendComplaintEmail(savedPost, adminEmail);
+            }
+        }
+
+        return new ComplaintResponseDto(savedPost);
     }
+
+    private void sendComplaintEmail(Post post, String adminEmail) {
+        String emailSubject = "[새로운 민원] " + post.getTitle();
+        String emailContent = String.format(
+            "새로운 민원이 등록되었습니다.\n\n" +
+            "제목: %s\n" +
+            "작성자: %s\n" +
+            "부서: %s\n" +
+            "내용: %s",
+            post.getTitle(),
+            post.getAuthor(),
+            post.getDepartment(),
+            post.getContents()
+        );
+
+        try {
+            emailService.sendNotification(adminEmail, emailSubject, emailContent);
+        } catch (Exception e) {
+            System.err.println("Failed to send email: " + e.getMessage());
+        }
+    }
+
+    
+
     // 의견 작성
     @Transactional
-    public OpinionResponseDto createOpinion(OpinionRequestsDto requestsDto) {
+    public OpinionResponseDto createOpinion(OpinionRequestsDto requestsDto, String token) {
+        String role = jwtUtil.getRole(token);
+        String email = jwtUtil.getEmail(token);
+        
+        if (!ROLE_STUDENT.equals(role)) {
+            throw new IllegalStateException(String.format(STUDENT_ONLY_MESSAGE, "의견"));
+        }
+
         Post post = new Post(requestsDto);
-        postRepository.save(post);
-        return new OpinionResponseDto(post);
+        post.setAuthor(email); 
+
+        Post savedPost = postRepository.save(post);
+        return new OpinionResponseDto(savedPost);
     }
 
     // 민원 조회
-    @Transactional(readOnly = true)
-    public ComplaintResponseDto getComplaint(Long id) {
-        Post post = postRepository.findByIdAndCategory(id,Category.민원)
+    @Transactional
+    public ComplaintResponseDto getComplaint(Long id, String userId) {
+        Post post = postRepository.findByIdAndCategory(id, Category.민원)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디이거나 민원이 아닙니다."));
+        
+        if (userId != null) {
+            post.incrementView(userId);
+        }
         return new ComplaintResponseDto(post);
     }
 
     // 의견 조회
-    @Transactional(readOnly = true)
-    public OpinionResponseDto getOpinion(Long id) {
+    @Transactional
+    public OpinionResponseDto getOpinion(Long id, String userId) {
         Post post = postRepository.findByIdAndCategory(id, Category.의견)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디이거나 의견이 아닙니다."));
+        
+        if (userId != null) {
+            post.incrementView(userId);
+        }
         return new OpinionResponseDto(post);
     }
 
@@ -82,33 +158,6 @@ public class PostService {
         verifyPassword(post, requestsDto.getPassword());
         post.update(requestsDto);
         return new ComplaintResponseDto(post);
-    }
-/*
-    // 의견 수정
-    @Transactional
-    public OpinionResponseDto updateOpinion(Long id, OpinionRequestsDto requestsDto) throws Exception {
-        Post post = getPostByIdAndCategory(id, Category.의견);
-        verifyPassword(post, requestsDto.getPassword());
-        post.update(requestsDto);
-        return new OpinionResponseDto(post);
-    }
-*/
-    // 민원 삭제
-    @Transactional
-    public SuccessResponseDto deleteComplaint(Long id, ComplaintRequestsDto requestsDto) throws Exception {
-        Post post = getPostByIdAndCategory(id, Category.민원);
-        verifyPassword(post, requestsDto.getPassword());
-        postRepository.delete(post);
-        return new SuccessResponseDto(true);
-    }
-
-    // 의견 삭제
-    @Transactional
-    public SuccessResponseDto deleteOpinion(Long id, OpinionRequestsDto requestsDto) throws Exception {
-        Post post = getPostByIdAndCategory(id, Category.의견);
-        verifyPassword(post, requestsDto.getPassword());
-        postRepository.delete(post);
-        return new SuccessResponseDto(true);
     }
 
     // 카테고리, id 확인
@@ -132,25 +181,6 @@ public class PostService {
                 .stream().map(ComplaintResponseDto::new).toList();
     }
 
-    //민원 조회수 증가 
-    @Transactional
-    public ComplaintResponseDto getComplaint(Long id, String userId) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
-        
-        post.incrementView(userId); 
-        return new ComplaintResponseDto(post);
-    }
-
-    //의견 조회수 증가
-    @Transactional
-    public OpinionResponseDto getOpinion(Long id, String userId) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물입니다."));
-        
-        post.incrementView(userId);
-        return new OpinionResponseDto(post);
-    }
 
     //좋아요 추가
     @Transactional

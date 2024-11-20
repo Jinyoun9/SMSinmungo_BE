@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ComplaintRequestsDto {
-    private String author;
+    //private String author;
     private String password;
     private String title;
     private String contents;
