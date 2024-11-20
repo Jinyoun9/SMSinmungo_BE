@@ -151,15 +151,6 @@ public class PostService {
         return new OpinionResponseDto(post);
     }
 
-    // 민원 수정
-    @Transactional
-    public ComplaintResponseDto updateComplaint(Long id, ComplaintRequestsDto requestsDto) throws Exception {
-        Post post = getPostByIdAndCategory(id, Category.민원);
-        verifyPassword(post, requestsDto.getPassword());
-        post.update(requestsDto);
-        return new ComplaintResponseDto(post);
-    }
-
     // 카테고리, id 확인
     private Post getPostByIdAndCategory(Long id, Category category) {
         return postRepository.findById(id)

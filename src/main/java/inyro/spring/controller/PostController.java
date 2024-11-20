@@ -124,19 +124,6 @@ public class PostController implements PostDocs {
         return postService.getPostsByDepartment(dept);
     }
 
-
-    // 민원 수정
-    @Operation(summary = "민원 수정", description = "기존 민원의 내용을 수정합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "민원 수정 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-        @ApiResponse(responseCode = "404", description = "민원을 찾을 수 없음")
-    })
-    @PutMapping("/complaints/{id}")
-    public ComplaintResponseDto updateComplaint(@PathVariable Long id, @RequestBody ComplaintRequestsDto requestsDto) throws Exception {
-        return postService.updateComplaint(id, requestsDto);
-    }
-
     // 좋아요 추가
     @Operation(summary = "좋아요 추가", description = "게시물에 좋아요를 추가합니다.")
     @ApiResponses({

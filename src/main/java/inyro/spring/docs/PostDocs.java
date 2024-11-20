@@ -76,14 +76,6 @@ public interface PostDocs {
         @Parameter(description = "부서명 (시설, 행정, 보건, 교육)") String department
     );
 
-    @Operation(summary = "민원 수정", description = "기존 민원의 내용을 수정합니다.")
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "민원 수정 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-        @ApiResponse(responseCode = "404", description = "민원을 찾을 수 없음")
-    })
-    ComplaintResponseDto updateComplaint(Long id, ComplaintRequestsDto requestsDto) throws Exception;
-
     @Operation(summary = "좋아요 추가", description = "게시물에 좋아요를 추가합니다.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "좋아요 추가 성공"),

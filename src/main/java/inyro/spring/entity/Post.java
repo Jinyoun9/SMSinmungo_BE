@@ -1,9 +1,5 @@
 package inyro.spring.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-
 import inyro.spring.dto.ComplaintRequestsDto;
 import inyro.spring.dto.OpinionRequestsDto;
 import inyro.spring.enums.Category;
@@ -13,6 +9,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -165,19 +167,6 @@ public class Post extends Timestamped {
         this.author = requestsDto.getAuthor();
         this.password = requestsDto.getPassword();
         this.category = Category.의견;
-    }
-
-    public void update(ComplaintRequestsDto dto) {
-        this.title = dto.getTitle();
-        this.contents = dto.getContents();
-        this.department = dto.getDepartment();
-        //this.category = dto.getCategory();
-        //this.status = dto.getStatus(); //관리자가 수정할 때
-    }
-
-    public void update(OpinionRequestsDto requestsDto) {
-        this.title = requestsDto.getTitle();
-        this.contents = requestsDto.getContents();
     }
 
     public void setAuthor(String author) {
