@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/univ")
+import java.util.List;
+
+@RestController
+@RequestMapping("/univ")
 public class UnivPostController implements UnivPostDocs {
 
     private final UnivPostService univPostService;
@@ -20,7 +23,7 @@ public class UnivPostController implements UnivPostDocs {
         this.univPostService = univPostService;
     }
 
-    @RequestMapping("/post/{token}")
+    @PostMapping("/post/{token}")
     public ResponseEntity<UnivPost> createPost(@RequestBody UnivPostDto univPostDto, BindingResult bindingResult, String token) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -49,6 +52,14 @@ public class UnivPostController implements UnivPostDocs {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+    @PostMapping("/test")
+    public void test(@RequestHeader("Authorization") String token, @RequestBody UnivPostDto univPostDto){
+        univPostService.postTest(univPostDto, token);
+    }
+    @GetMapping("/test")
+    public List<UnivPost> test(@RequestHeader("Authorization") String token){
+        return univPostService.getTest(token);
     }
 
 }
