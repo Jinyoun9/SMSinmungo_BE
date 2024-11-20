@@ -1,7 +1,5 @@
 package inyro.spring.dto;
 
-import inyro.spring.enums.Category;
-import inyro.spring.enums.ComplaintStatus;
 import inyro.spring.enums.Department;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +12,4 @@ public class ComplaintRequestsDto {
     private String title;
     private String contents;
     private Department department;
-    private Category category;
-    private ComplaintStatus status;
 }

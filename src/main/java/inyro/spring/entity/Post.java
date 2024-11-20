@@ -171,8 +171,8 @@ public class Post extends Timestamped {
         this.title = dto.getTitle();
         this.contents = dto.getContents();
         this.department = dto.getDepartment();
-        this.category = dto.getCategory();
-        this.status = dto.getStatus(); //관리자가 수정할 때
+        //this.category = dto.getCategory();
+        //this.status = dto.getStatus(); //관리자가 수정할 때
     }
 
     public void update(OpinionRequestsDto requestsDto) {
