@@ -1,5 +1,6 @@
 package com.smsinmungo.service;
 
+import com.smsinmungo.dto.LogInDto;
 import com.smsinmungo.dto.SignUpDto;
 import com.smsinmungo.repository.MemberRepository;
 import com.smsinmungo.domain.Member;
@@ -9,6 +10,9 @@ import jakarta.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,27 +33,28 @@ public class AuthService {
     String department = signUpDto.getDepartment();
     String major = signUpDto.getMajor();
 
-    // 이메일 중복 체크
-    Boolean isExist = memberRepository.existsByEmail(email);
-    if (isExist) {
-      throw new IllegalArgumentException("Email already exists");
-    }
+    // 이메일 중복 체크 제거
+    // Boolean isExist = memberRepository.existsByEmail(email);
+    // if (isExist) {
+    //     throw new IllegalArgumentException("Email already exists");
+    // }
 
-    // 비밀번호 암호화 후 Member 저장 (활성화되지 않은 상태)
+    // 비밀번호 암호화 후 Member 저장 (활성화된 상태로 저장)
     Member member = new Member(email, bCryptPasswordEncoder.encode(password), department, major, "ROLE_USER");
-    member.setEnabled(false); // 이메일 인증 전까지 비활성화 상태
+    member.setEnabled(true); // 이메일 인증 없이 바로 활성화 상태로 저장
     memberRepository.save(member);
 
-    // 인증 토큰 생성 및 저장
-    String token = UUID.randomUUID().toString();
-    VerificationToken verificationToken = new VerificationToken(token, LocalDateTime.now().plusHours(24), member);
-    verificationTokenRepository.save(verificationToken);
+    // 인증 토큰 생성 및 저장 제거
+    // String token = UUID.randomUUID().toString();
+    // VerificationToken verificationToken = new VerificationToken(token, LocalDateTime.now().plusHours(24), member);
+    // verificationTokenRepository.save(verificationToken);
 
-    // 이메일로 인증 코드 전송
-    String title = "회원가입 이메일 인증";
-    String content = "<html><body><h1>인증 코드: " + token + "</h1><p>해당 코드를 홈페이지에 입력하세요.</p></body></html>";
-    emailService.sendEmail(email, title, content);
+    // 이메일로 인증 코드 전송 제거
+    // String title = "회원가입 이메일 인증";
+    // String content = "<html><body><h1>인증 코드: " + token + "</h1><p>해당 코드를 홈페이지에 입력하세요.</p></body></html>";
+    // emailService.sendEmail(email, title, content);
   }
+
 
   public void verifyEmail(String token) {
     VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
@@ -65,4 +70,21 @@ public class AuthService {
 
     verificationTokenRepository.delete(verificationToken);
   }
+
+//  public Authentication authenticate(LogInDto loginRequest) {
+//    // 사용자의 이메일과 비밀번호로 인증 토큰 생성
+//
+//    UsernamePasswordAuthenticationToken authenticationToken =
+//            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+//    // AuthenticationManager를 통해 인증 처리
+//    return authenticationManager.authenticate(authenticationToken);
+//  }
+
+  public HttpHeaders setResponseHeaderWithToken(String accessToken){
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Authorization", "Bearer " + accessToken);
+    return headers;
+  }
+
+
 }

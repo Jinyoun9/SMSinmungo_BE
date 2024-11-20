@@ -1,5 +1,6 @@
 package com.smsinmungo.controller;
 
+import com.smsinmungo.docs.UnivPostDocs;
 import com.smsinmungo.dto.UnivPostDto;
 import com.smsinmungo.model.UnivPost;
 import com.smsinmungo.service.UnivPostService;

@@ -1,12 +1,16 @@
 package com.smsinmungo.docs;
 
 
+import com.smsinmungo.dto.CommentDto;
 import com.smsinmungo.model.Comment;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 // 보통은 컨트롤러 메서드에 @Operation 을 열거하는데 가독성이 떨어진다고 생각해서 Docs 인터페이스 하나 만들고, 사용할 컨트롤러에서 implements 하는 식으로 사용합니다.
