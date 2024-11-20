@@ -30,18 +30,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid LogInDto loginRequest, HttpServletResponse response) {
-        // TODO: Service layer로 위임.
-        Member member = memberRepository.findByEmail(loginRequest.getEmail());
-        String accessToken = jwtUtil.createJwt("access",
-                member.getEmail(),
-                member.getDepartment(),
-                member.getMajor(),
-                member.getRole(),
-                1000000L);
-        HttpHeaders headers = authService.setResponseHeaderWithToken(accessToken);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(accessToken);
+        return ResponseEntity.ok().build();
     }
 }
