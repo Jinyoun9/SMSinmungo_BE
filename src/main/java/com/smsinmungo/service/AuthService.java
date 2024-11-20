@@ -34,10 +34,10 @@ public class AuthService {
     String major = signUpDto.getMajor();
 
     // 이메일 중복 체크 제거
-    // Boolean isExist = memberRepository.existsByEmail(email);
-    // if (isExist) {
-    //     throw new IllegalArgumentException("Email already exists");
-    // }
+    Boolean isExist = memberRepository.existsByEmail(email);
+    if (isExist) {
+         throw new IllegalArgumentException("Email already exists");
+    }
 
     // 비밀번호 암호화 후 Member 저장 (활성화된 상태로 저장)
     Member member = new Member(email, bCryptPasswordEncoder.encode(password), department, major, "ROLE_USER");
@@ -45,14 +45,14 @@ public class AuthService {
     memberRepository.save(member);
 
     // 인증 토큰 생성 및 저장 제거
-    // String token = UUID.randomUUID().toString();
-    // VerificationToken verificationToken = new VerificationToken(token, LocalDateTime.now().plusHours(24), member);
-    // verificationTokenRepository.save(verificationToken);
+    String token = UUID.randomUUID().toString();
+    VerificationToken verificationToken = new VerificationToken(token, LocalDateTime.now().plusHours(24), member);
+    verificationTokenRepository.save(verificationToken);
 
     // 이메일로 인증 코드 전송 제거
-    // String title = "회원가입 이메일 인증";
-    // String content = "<html><body><h1>인증 코드: " + token + "</h1><p>해당 코드를 홈페이지에 입력하세요.</p></body></html>";
-    // emailService.sendEmail(email, title, content);
+    String title = "회원가입 이메일 인증";
+    String content = "<html><body><h1>인증 코드: " + token + "</h1><p>해당 코드를 홈페이지에 입력하세요.</p></body></html>";
+    emailService.sendEmail(email, title, content);
   }
 
 
@@ -71,20 +71,6 @@ public class AuthService {
     verificationTokenRepository.delete(verificationToken);
   }
 
-//  public Authentication authenticate(LogInDto loginRequest) {
-//    // 사용자의 이메일과 비밀번호로 인증 토큰 생성
-//
-//    UsernamePasswordAuthenticationToken authenticationToken =
-//            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
-//    // AuthenticationManager를 통해 인증 처리
-//    return authenticationManager.authenticate(authenticationToken);
-//  }
-
-  public HttpHeaders setResponseHeaderWithToken(String accessToken){
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("Authorization", "Bearer " + accessToken);
-    return headers;
-  }
 
 
 }
