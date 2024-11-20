@@ -10,7 +10,7 @@ spring:
     username: root
     password: keypass
   jwt:
-    secret: "vmfhaltmskdlstkfkdgodyroqkfwkdb`alroqkfwkdbalaaaaaaaaaaaaaaaabbbbb"
+    secret: "vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb"
     # issuer: am030818@naver.com
     # secret-key: springboot-project-board-springboot-project-board-springboot-project-board
     # access-expiration: 3600
