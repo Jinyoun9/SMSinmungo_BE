@@ -27,7 +27,7 @@ public class UnivPostService {
     }
 
     @Transactional
-    public void savePost(com.smsinmungo.dto.UnivPostDto univPostDto, String token) {
+    public void savePost(UnivPostDto univPostDto, String token) {
         UnivPost univPost;
         LocalDateTime localDateTime = LocalDateTime.now();
 
