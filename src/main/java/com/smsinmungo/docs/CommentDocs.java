@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 
 // 보통은 컨트롤러 메서드에 @Operation 을 열거하는데 가독성이 떨어진다고 생각해서 Docs 인터페이스 하나 만들고, 사용할 컨트롤러에서 implements 하는 식으로 사용합니다.
@@ -38,5 +39,6 @@ public interface CommentDocs {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "댓글 생성 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "댓글 생성 실패") })
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token);
+    public ResponseEntity<Comment> createComment(@RequestHeader("Authorization") String token , @Valid @RequestBody CommentDto commentDto,
+                                                 BindingResult bindingResult);
 }

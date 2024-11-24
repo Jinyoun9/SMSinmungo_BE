@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @Tag(name = "UnivPost", description = "정책 전 의견수렴 관련 API 입니다.")
 public interface UnivPostDocs {
@@ -22,7 +23,8 @@ public interface UnivPostDocs {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "게시물 생성 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "게시물 생성 실패(invalid role)") })
-    public ResponseEntity<UnivPost> createPost(@RequestBody UnivPostDto univPostDto, BindingResult bindingResult, String token);
+    public ResponseEntity<UnivPost> createPost(@RequestHeader("Authorization") String token, @RequestBody UnivPostDto univPostDto,
+                                               BindingResult bindingResult);
 
     @Operation(summary = "삭제", description = "작성자의 id를 매개변수로 받아 해당 게시물을 삭제.")
     @ApiResponses(value = {
