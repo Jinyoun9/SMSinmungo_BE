@@ -28,6 +28,7 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = true)
     private Member member;
 
+    @ManyToOne
     private Post post; // 댓글이 달린 게시물 정보 추가
 
     public void like() {
