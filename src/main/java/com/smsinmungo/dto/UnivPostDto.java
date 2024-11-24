@@ -13,4 +13,6 @@ public class UnivPostDto {
     private String title;
     private String contents;
     private String category;
+    private int good;
+    private int view;
 }
