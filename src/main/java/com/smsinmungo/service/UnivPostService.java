@@ -29,14 +29,24 @@ public class UnivPostService {
     @Transactional
     public void savePost(com.smsinmungo.dto.UnivPostDto univPostDto, String token) {
         UnivPost univPost;
+        LocalDateTime localDateTime = LocalDateTime.now();
 
         String role = jwtUtil.getRole(token); //token 에서 role 추출
-        if (role.equals("ADMIN")) { // role 이 admin 일때만 post 가능
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        if (role.equals("ROLE_ADMIN")) { // role 이 admin 일때만 post 가능
             univPost = UnivPost.builder()
                     .title(univPostDto.getTitle())
                     .contents(univPostDto.getContents())
                     .author(univPostDto.getAuthor())
+                    .good(univPostDto.getGood())
                     .category(univPostDto.getCategory())
+                    .view(univPostDto.getView())
+                    .good(0)
+                    .member(member)
+                    .createdAt(localDateTime)
+                    .modifiedAt(localDateTime)
                     .build();
             univPostRepository.save(univPost);
         }
@@ -79,6 +89,8 @@ public class UnivPostService {
         univPostRepository.save(univPost);
 
     }
+
+    /*
     public List<UnivPost> getTest(String token) {
         if (token == null || token.trim().isEmpty()) {
             throw new IllegalArgumentException("토큰이 비어있습니다.");
@@ -91,4 +103,6 @@ public class UnivPostService {
 
         return univPostList;
     }
+
+     */
 }
