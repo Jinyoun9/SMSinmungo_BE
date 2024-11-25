@@ -24,7 +24,8 @@ public class UnivPostController implements UnivPostDocs {
     }
 
     @PostMapping("/post/{token}")
-    public ResponseEntity<UnivPost> createPost(@RequestBody UnivPostDto univPostDto, BindingResult bindingResult, String token) {
+    public ResponseEntity<UnivPost> createPost(@RequestHeader("Authorization") String token, @RequestBody UnivPostDto univPostDto,
+                                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
@@ -53,6 +54,8 @@ public class UnivPostController implements UnivPostDocs {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    /*
     @PostMapping("/test")
     public void test(@RequestHeader("Authorization") String token, @RequestBody UnivPostDto univPostDto){
         univPostService.postTest(univPostDto, token);
@@ -61,5 +64,6 @@ public class UnivPostController implements UnivPostDocs {
     public List<UnivPost> test(@RequestHeader("Authorization") String token){
         return univPostService.getTest(token);
     }
+     */
 
 }

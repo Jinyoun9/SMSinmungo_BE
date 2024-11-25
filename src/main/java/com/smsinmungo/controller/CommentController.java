@@ -23,7 +23,8 @@ public class CommentController implements CommentDocs {
     private final CommentService commentService;
 
     @PostMapping("/write/{token}")
-    public ResponseEntity<Comment> createComment(@Valid @RequestBody CommentDto commentDto, BindingResult bindingResult, String token) {
+    public ResponseEntity<Comment> createComment(@RequestHeader("Authorization") String token ,@Valid @RequestBody CommentDto commentDto,
+                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
