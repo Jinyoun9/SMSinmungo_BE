@@ -2,10 +2,10 @@ spring:
   application:
     name: SMSinmungo
   redis:
-    host: localhost
+    host: 34.69.7.102
     port: 6380
   datasource:
-    url: jdbc:mariadb://localhost:3306/smsinmungo
+    url: jdbc:mariadb://34.69.7.102:3306/smsinmungo
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: keypass
