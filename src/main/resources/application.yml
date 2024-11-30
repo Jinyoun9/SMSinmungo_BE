@@ -3,7 +3,7 @@ spring:
     name: SMSinmungo
   redis:
     host: 34.69.7.102
-    port: 6380
+    port: 6379
   datasource:
     url: jdbc:mariadb://34.69.7.102:3306/smsinmungo
     driver-class-name: org.mariadb.jdbc.Driver
@@ -18,8 +18,8 @@ spring:
   mail:
     host: smtp.gmail.com  # Gmail의 SMTP 서버 호스트
     port: 587  # Gmail SMTP 서버는 587번 포트를 사용
-    username: tommys915@gmail.com
-    password: password
+    username: seonjiwon0126@gmail.com
+    password: mygr csxb txao enzw
     properties:
       mail:
         smtp:
