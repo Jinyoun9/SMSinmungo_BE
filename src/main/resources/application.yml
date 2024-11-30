@@ -5,7 +5,7 @@ spring:
     host: 34.69.7.102
     port: 6379
   datasource:
-    url: jdbc:mariadb://34.69.7.102:3306/smsinmungo
+    url: jdbc:mariadb://34.173.122.51:3306/smsinmungo
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: keypass
