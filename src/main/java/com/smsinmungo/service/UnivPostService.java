@@ -67,6 +67,7 @@ public class UnivPostService {
         univPostRepository.save(univPost); //like++ 후 저장
     }
 
+    /*
     public void postTest(UnivPostDto univPostDto, String token) {
         LocalDateTime localDateTime = LocalDateTime.now();
         if (token == null || token.trim().isEmpty()) {
@@ -90,7 +91,6 @@ public class UnivPostService {
 
     }
 
-    /*
     public List<UnivPost> getTest(String token) {
         if (token == null || token.trim().isEmpty()) {
             throw new IllegalArgumentException("토큰이 비어있습니다.");
@@ -102,7 +102,6 @@ public class UnivPostService {
         List<UnivPost> univPostList = univPostRepository.findAllByMemberId(member.getId());
 
         return univPostList;
-    }
+    }*/
 
-     */
 }

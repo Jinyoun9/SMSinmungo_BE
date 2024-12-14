@@ -55,15 +55,15 @@ public class UnivPostController implements UnivPostDocs {
         }
     }
 
-    /*
-    @PostMapping("/test")
+
+    /*@PostMapping("/test")
     public void test(@RequestHeader("Authorization") String token, @RequestBody UnivPostDto univPostDto){
         univPostService.postTest(univPostDto, token);
     }
     @GetMapping("/test")
     public List<UnivPost> test(@RequestHeader("Authorization") String token){
         return univPostService.getTest(token);
-    }
-     */
+    }*/
+
 
 }
