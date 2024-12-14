@@ -49,10 +49,10 @@ public class AuthService {
     VerificationToken verificationToken = new VerificationToken(token, LocalDateTime.now().plusHours(24), member);
     verificationTokenRepository.save(verificationToken);
 
-    // 이메일로 인증 코드 전송 제거
-    String title = "회원가입 이메일 인증";
-    String content = "<html><body><h1>인증 코드: " + token + "</h1><p>해당 코드를 홈페이지에 입력하세요.</p></body></html>";
-    emailService.sendEmail(email, title, content);
+//    // 이메일로 인증 코드 전송 제거
+//    String title = "회원가입 이메일 인증";
+//    String content = "<html><body><h1>인증 코드: " + token + "</h1><p>해당 코드를 홈페이지에 입력하세요.</p></body></html>";
+//    emailService.sendEmail(email, title, content);
   }
 
 

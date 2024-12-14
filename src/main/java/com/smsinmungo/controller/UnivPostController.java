@@ -56,7 +56,14 @@ public class UnivPostController implements UnivPostDocs {
     }
 
 
-    /*@PostMapping("/test")
+
+    @GetMapping("/postList/{token}")
+    public List<UnivPost> getPosts(@RequestHeader("Authorization") String token) {
+        return univPostService.getUnivPosts(token);
+    }
+
+    /*
+    @PostMapping("/test")
     public void test(@RequestHeader("Authorization") String token, @RequestBody UnivPostDto univPostDto){
         univPostService.postTest(univPostDto, token);
     }
@@ -64,6 +71,4 @@ public class UnivPostController implements UnivPostDocs {
     public List<UnivPost> test(@RequestHeader("Authorization") String token){
         return univPostService.getTest(token);
     }*/
-
-
 }

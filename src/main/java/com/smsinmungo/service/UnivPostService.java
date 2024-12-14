@@ -31,6 +31,10 @@ public class UnivPostService {
         UnivPost univPost;
         LocalDateTime localDateTime = LocalDateTime.now();
 
+        if (token == null || token.trim().isEmpty()) { //token 이 비어있는지 확인
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+
         String role = jwtUtil.getRole(token); //token 에서 role 추출
         String email = jwtUtil.getEmail(token);
         Member member = memberRepository.findByEmail(email);
@@ -67,6 +71,21 @@ public class UnivPostService {
         univPostRepository.save(univPost); //like++ 후 저장
     }
 
+
+    @Transactional
+    public List<UnivPost> getUnivPosts(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        List<UnivPost> univPostList = univPostRepository.findAllByMemberId(member.getId());
+
+        return univPostList;
+    }
+
+
     /*
     public void postTest(UnivPostDto univPostDto, String token) {
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -90,6 +109,7 @@ public class UnivPostService {
         univPostRepository.save(univPost);
 
     }
+
 
     public List<UnivPost> getTest(String token) {
         if (token == null || token.trim().isEmpty()) {
