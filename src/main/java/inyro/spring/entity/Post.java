@@ -52,7 +52,7 @@ public class Post extends Timestamped {
     @ElementCollection
     @CollectionTable(name = "post_views", joinColumns = @JoinColumn(name = "post_id"))
     private Set<ViewInfo> viewedUsers = new HashSet<>();
-    
+
     @Embeddable
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -68,9 +68,9 @@ public class Post extends Timestamped {
 
     public void incrementView(String userId) {
         boolean hasViewedToday = viewedUsers.stream()
-                .anyMatch(view -> view.getUserId().equals(userId) 
+                .anyMatch(view -> view.getUserId().equals(userId)
                         && view.getViewedAt().equals(LocalDate.now()));
-        
+
         if (!hasViewedToday) {
             viewedUsers.add(new ViewInfo(userId));
             this.view++;
@@ -106,9 +106,9 @@ public class Post extends Timestamped {
         if (hasActiveLike(userId)) {
             return false;
         }
-        
+
         likedUsers.removeIf(like -> like.getUserId().equals(userId));
-        
+
         likedUsers.add(new LikeInfo(userId));
         this.good++;
         return true;

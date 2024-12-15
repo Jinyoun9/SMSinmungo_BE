@@ -10,8 +10,8 @@ public class TempJwtUtil {
         return "ROLE_STUDENT";
     }
 
-    public String getEmail(String token) {
-        // 테스트를 위해 고정된 이메일 반환
-        return "test.student@example.com";
+    public String getName(String token) {
+        // 테스트를 위해 고정된 이름 반환
+        return "Test Student";
     }
 }

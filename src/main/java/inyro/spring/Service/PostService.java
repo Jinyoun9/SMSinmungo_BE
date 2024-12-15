@@ -46,7 +46,7 @@ public class PostService {
         Long nextCursor = content.isEmpty() ? null : content.get(content.size() -1).getId();
 
         return new CursorResult<>(content.stream().map(ComplaintResponseDto::new).toList(), nextCursor, hasNext);
-    }   
+    }
 
     // 의견 목록 조회
     @Transactional(readOnly = true)
@@ -62,18 +62,19 @@ public class PostService {
         return new CursorResult<>(content.stream().map(OpinionResponseDto::new).toList(), nextCursor, hasNext);
     }
 
+
     // 민원 작성
     @Transactional
     public ComplaintResponseDto createComplaint(ComplaintRequestsDto requestsDto, String token) {
         String role = jwtUtil.getRole(token);
-        String email = jwtUtil.getEmail(token);
+        String author = jwtUtil.getName(token);
 
          if (!ROLE_STUDENT.equals(role)) {
             throw new IllegalStateException(String.format(STUDENT_ONLY_MESSAGE, "민원"));
         }
 
         Post post = new Post(requestsDto);
-        post.setAuthor(email);
+        post.setAuthor(author);
         Post savedPost = postRepository.save(post);
 
         // NEW 상태이고 부서가 지정된 경우에만 이메일 발송
@@ -108,20 +109,19 @@ public class PostService {
         }
     }
 
-    
 
     // 의견 작성
     @Transactional
     public OpinionResponseDto createOpinion(OpinionRequestsDto requestsDto, String token) {
         String role = jwtUtil.getRole(token);
-        String email = jwtUtil.getEmail(token);
-        
+        String author = jwtUtil.getName(token);
+
         if (!ROLE_STUDENT.equals(role)) {
             throw new IllegalStateException(String.format(STUDENT_ONLY_MESSAGE, "의견"));
         }
 
         Post post = new Post(requestsDto);
-        post.setAuthor(email); 
+        post.setAuthor(author);
 
         Post savedPost = postRepository.save(post);
         return new OpinionResponseDto(savedPost);
@@ -144,25 +144,11 @@ public class PostService {
     public OpinionResponseDto getOpinion(Long id, String userId) {
         Post post = postRepository.findByIdAndCategory(id, Category.의견)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디이거나 의견이 아닙니다."));
-        
+
         if (userId != null) {
             post.incrementView(userId);
         }
         return new OpinionResponseDto(post);
-    }
-
-    // 카테고리, id 확인
-    private Post getPostByIdAndCategory(Long id, Category category) {
-        return postRepository.findById(id)
-                .filter(post -> post.getCategory() == category)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 " + category + " 아이디입니다."));
-    }
-
-    // 비밀번호 검증
-    private void verifyPassword(Post post, String password) throws Exception {
-        if (!post.getPassword().equals(password)) {
-            throw new Exception("비밀번호가 일치하지 않습니다.");
-        }
     }
 
     //부서별 조회
