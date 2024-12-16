@@ -35,9 +35,9 @@ public class UnivPostController implements UnivPostDocs {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<UnivPost> deletePost(@PathVariable("id") Long id) {
+    public ResponseEntity<UnivPost> deletePost(@RequestHeader("Authorization") String token) {
         try {
-            univPostService.deletePost(id);
+            univPostService.deletePost(token);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -45,10 +45,10 @@ public class UnivPostController implements UnivPostDocs {
 
     }
 
-    @PatchMapping("/like/{id}")
-    public ResponseEntity<Void> likePost(@PathVariable("id") Long id) {
+    @PatchMapping("/like/{token}")
+    public ResponseEntity<Void> likePost(@RequestHeader("Authorization") String token) {
         try {
-            univPostService.likePost(id);
+            univPostService.likePost(token);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

@@ -34,29 +34,29 @@ public class CommentController implements CommentDocs {
     }
 
     @PatchMapping("/like/{id}")
-    public ResponseEntity<Void> likeComment(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> likeComment(@RequestHeader("Authorization") String token) {
         try {
-            commentService.likeComment(id);
+            commentService.likeComment(token);
             return ResponseEntity.ok().build();
-        } catch (CommentNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @PatchMapping("/dislike/{id}")
-    public ResponseEntity<Void> dislikeComment(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> dislikeComment(@RequestHeader("Authorization") String token) {
         try {
-            commentService.dislikeComment(id);
+            commentService.dislikeComment(token);
             return ResponseEntity.ok().build();
-        } catch (CommentNotFoundException e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id) {
+    public ResponseEntity<Comment> deleteComment(@RequestHeader("Authorization") String token) {
         try {
-            commentService.deleteComment(id);
+            commentService.deleteComment(token);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
