@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UnivPostService {
@@ -57,18 +58,31 @@ public class UnivPostService {
     }
 
     @Transactional
-    public void deletePost(Long id) {
-        UnivPost univPost = univPostRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물을 찾지 못했습니다"));
-        univPostRepository.delete(univPost);
+    public void deletePost(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        univPostRepository.deleteById(member.getId());
     }
 
     @Transactional
-    public void likePost(Long id) {
-        UnivPost univPost = univPostRepository.findById(id)
-                .orElseThrow(()-> new IllegalArgumentException("이 아이디의 Post 가 존재하지 않습니다: " + id));
-        univPost.like();
-        univPostRepository.save(univPost); //like++ 후 저장
+    public void likePost(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        UnivPost userUnivPost = univPostRepository.findById(member.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 univPost 가 존재하지 않습니다."));
+
+        userUnivPost.like();
+        univPostRepository.save(userUnivPost);
     }
 
 

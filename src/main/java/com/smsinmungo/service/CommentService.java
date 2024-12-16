@@ -55,25 +55,48 @@ public class CommentService {
     }
 
     @Transactional
-    public void likeComment(Long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(()-> new CommentNotFoundException("이 아이디의 comment 가 존재하지 않습니다: " + id));
+    public void likeComment(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        Comment comment = commentRepository.findById(member.getId())
+                .orElseThrow(() -> new IllegalArgumentException("이 아이디의 comment 가 존재하지 않습니다"));
+
         comment.like();
         commentRepository.save(comment); //like++ 후 저장
     }
 
     @Transactional
-    public void dislikeComment(Long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new CommentNotFoundException("이 아이디의 comment 가 존재하지 않습니다: " + id));
+    public void dislikeComment(String token) {
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        Comment comment = commentRepository.findById(member.getId())
+                .orElseThrow(() -> new IllegalArgumentException("이 아이디의 comment 가 존재하지 않습니다"));
+
         comment.dislike();
         commentRepository.save(comment); //dislike++ 후 저장
     }
 
     @Transactional
-    public void deleteComment(Long id) { //comment 삭제
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 comment 조회 실패"));
+    public void deleteComment(String token) { //comment 삭제
+        if (token == null || token.trim().isEmpty()) {
+            throw new IllegalArgumentException("토큰이 비어있습니다.");
+        }
+
+        String email = jwtUtil.getEmail(token);
+        Member member = memberRepository.findByEmail(email);
+
+        Comment comment = commentRepository.findById(member.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 id의 comment 조회 실패"));
         commentRepository.delete(comment);
     }
 }
