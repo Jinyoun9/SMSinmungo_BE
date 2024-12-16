@@ -19,7 +19,7 @@ public interface UnivPostDocs {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "게시물 좋아요 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "게시물 좋아요 실패") })
-    public ResponseEntity<Void> likePost(@PathVariable("id") Long id);
+    public ResponseEntity<Void> likePost(@RequestHeader("Authorization") String token);
 
     @Operation(summary = "게시물생성", description = "token을 받아 role을 추출하여 ADMIN 일때만 게시물 생성.")
     @ApiResponses(value = {
@@ -32,7 +32,7 @@ public interface UnivPostDocs {
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "게시물 삭제 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "게시물 삭제 실패") })
-    public ResponseEntity<UnivPost> deletePost(@PathVariable("id") Long id);
+    public ResponseEntity<UnivPost> deletePost(@RequestHeader("Authorization") String token);
 
     @Operation(summary = "게시물조회", description = "토큰을 받아 email 을 repository 에서 조회하여 작성한 게시물 전부를 List 로 반환")
     @ApiResponses(value = {
