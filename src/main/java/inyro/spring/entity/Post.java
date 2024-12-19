@@ -152,8 +152,6 @@ public class Post extends Timestamped {
     }
 
     public Post(ComplaintRequestsDto requestsDto) {
-        //this.author = requestsDto.getAuthor();
-        this.password = requestsDto.getPassword();
         this.title = requestsDto.getTitle();
         this.contents = requestsDto.getContents();
         this.department = requestsDto.getDepartment();
@@ -164,8 +162,6 @@ public class Post extends Timestamped {
     public Post(OpinionRequestsDto requestsDto) {
         this.title = requestsDto.getTitle();
         this.contents = requestsDto.getContents();
-        this.author = requestsDto.getAuthor();
-        this.password = requestsDto.getPassword();
         this.category = Category.의견;
     }
 
