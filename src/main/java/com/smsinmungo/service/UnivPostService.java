@@ -21,6 +21,7 @@ public class UnivPostService {
     private final MemberRepository memberRepository;
     private final JWTUtil jwtUtil;
 
+    @Autowired
     public UnivPostService(UnivPostRepository univPostRepository, MemberRepository memberRepository, JWTUtil jwtUtil) {
         this.univPostRepository = univPostRepository;
         this.memberRepository = memberRepository;
