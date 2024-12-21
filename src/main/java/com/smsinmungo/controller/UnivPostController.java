@@ -34,7 +34,7 @@ public class UnivPostController implements UnivPostDocs {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{token}")
     public ResponseEntity<UnivPost> deletePost(@RequestHeader("Authorization") String token) {
         try {
             univPostService.deletePost(token);
